@@ -339,9 +339,9 @@
   ('multiprocessing',
    '/usr/lib/python3.8/multiprocessing/__init__.py',
    'PYMODULE'),
+  ('stringprep', '/usr/lib/python3.8/stringprep.py', 'PYMODULE'),
   ('_py_abc', '/usr/lib/python3.8/_py_abc.py', 'PYMODULE'),
   ('tracemalloc', '/usr/lib/python3.8/tracemalloc.py', 'PYMODULE'),
-  ('stringprep', '/usr/lib/python3.8/stringprep.py', 'PYMODULE'),
   ('datetime', '/usr/lib/python3.8/datetime.py', 'PYMODULE'),
   ('_strptime', '/usr/lib/python3.8/_strptime.py', 'PYMODULE'),
   ('os', '/usr/lib/python3.8/os.py', 'PYMODULE')])

@@ -4,8 +4,7 @@
 2. 统计今天以来、一周以来每个应用的使用时间。
 
 ## 使用预览
-![new-version](picture/2.png)
-![picture1](picture/1.png)
+![new-version](picture/3.png)
 
 ## 用法
 `dist` 文件夹下，存有 `getWindows`, `display` 两个可执行文件，其中：第一个可执行文件是用来监听焦点窗口的名称的，该文件将每十秒钟监听以此焦点窗口的名称，并将信息写入 `~/.timespent/{}.csv` 以及 `~/.timespent/log.txt`。其中，`{}` 中的内容为某一天的时间戳。这个应用程序是用pyinstaller生成的，源代码为 `src/getWindows.py`。

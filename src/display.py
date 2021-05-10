@@ -16,8 +16,28 @@ def showchart(i, j, maxsize):
     numofequals = int(j * maxsize / i)
     return (" ( {}{} ) ".format('='*numofequals, ' '*(maxsize - numofequals)))
 
+def blue(s):
+    return "\033[34m{}\033[0m".format(s)
+
+def blue_green(s):
+    return "\033[36m{}\033[0m".format(s)
+
+def green(s):
+    return "\033[32m{}\033[0m".format(s)
+
+def white(s):
+    return "\033[37m{}\033[0m".format(s)
+
 # TODO:
-# def showgeneral(i, j, )
+def showgeneral(t, totaltime, maxsize):
+    maxsize = maxsize - 6
+    block = []
+    for i in t[:min(3, len(t))]:
+        block.append(int(int(i[1]) * maxsize/ totaltime))
+    while (len(block) < 3):
+        block.append(0)
+    return " ( {}{}{}{} ) ".format(block[0] * green('='), block[1] * blue('='), block[2] * blue_green('='), (maxsize - sum(block)) * white('='))
+    
 
 def readfile(filename):
     t = []
@@ -33,8 +53,14 @@ def display(s, t):
     totaltime = 0
     for i in t:
         totaltime += int(i[1])
-    print("{}{}{}{}".format(s.ljust(10), ' '*(os.get_terminal_size().columns - 10 - 16), "{}%".format(int(totaltime * 1000 / 3600 / 24)).ljust(7), str(datetime.timedelta(seconds=totaltime * 10)).rjust(9)))
     t.sort(key=lambda x: int(x[1]), reverse=True)
+    print("{}{}{}{}".format(s.ljust(10), showgeneral(t, totaltime, os.get_terminal_size().columns - 10 - 16), "{}%".format(int(totaltime * 1000 / 3600 / 24)).ljust(7), str(datetime.timedelta(seconds=totaltime * 10)).rjust(9)))
+    max3 = []
+    for i in t[:min(len(t), 3)]:
+        max3.append("={}    ".format(i[0]))
+    while (len(max3) < 3):
+        max3.append("")
+    print("{}{}{}{}".format(green(max3[0]), blue(max3[1]), blue_green(max3[2]), white("=other")))
     print("Here are the Apps you spent most of the time {}:".format(s))
     maxsize = max(len(i[0]) for i in t[:min(len(t), 5)])
     for i in t[:min(len(t), 5)]:
@@ -45,7 +71,7 @@ def display(s, t):
 def today(dirt):
     filename = dirt+"/.timespent/{}.csv".format(getname())
     t = readfile(filename)
-    display("today", t)
+    display("Today", t)
 
 def week(dirt):
     filenames = getweektime()
@@ -62,8 +88,9 @@ def week(dirt):
             if (flag == True):
                 t.append(i)
     
-    display("this week", t)
+    display("This week", t)
 
+# print(white("Hello World"))
 dirt = os.environ['HOME']
 today(dirt)
 print("\n")
