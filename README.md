@@ -3,6 +3,8 @@
 1. 统计今天以来、一周以来的电脑使用时间。
 2. 统计今天以来、一周以来每个应用的使用时间。
 
+[English-version](README_en.md)
+
 ## 使用预览
 ![new-version](picture/3.png)
 
