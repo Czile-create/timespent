@@ -21,11 +21,17 @@ A time usage statistics tool on Linux platform, which can display:
 
 [ok] print the data in an easy way.
 
-[==] para `-d` : print the data since specified number of days
+[ok] para `-h`          : print the infomation of help
 
-[==] para `-g` : print all the programs instead of top 5 programs
+[ok] para `-d` `--day`  : print the data of specified day
 
-[==] para `-p` : Only print the specified program's data
+[ok] para `-i` `--in`   : print the data in the past several days
+
+[==] para `-f` `--from` : print the data since specified number of days
+
+[ok] para `-g`          : print all the programs instead of top 5 programs
+
+[==] para `-p` `--program`: Only print the specified program's data
 
 [==] print the data in different hours(or mins)
 
