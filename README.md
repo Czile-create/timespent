@@ -1,50 +1,44 @@
-# 时间使用统计
-一个在Linux平台上的时间使用统计小工具，使用该应用可以：
-1. 统计今天以来、一周以来的电脑使用时间。
-2. 统计今天以来、一周以来每个应用的使用时间。
+# Timespent
+A time usage statistics tool on Linux platform, which can display:
+1. Statistics of computer use time since today and in the past week.
+2. Count the usage time of each application today and in the past week.
 
-[English-version](README_en.md)
+[中文版本](README.md)
 
-## 使用预览
+## Screenshot
 ![new-version](picture/3.png)
 
-## 用法
-1. 将 `dist/getWindows` 设置为开机自动启动程序
-2. 将 `dist/display` 放入主目录
-3. `Ctrl + Shift + T` 打开终端
-4. 输入 `./display` 查看应用使用时间
+## Feature
+- [x] print the data in an easy way.
 
-## 开发注释
-`dist` 文件夹下，存有 `getWindows`, `display` 两个可执行文件，其中：第一个可执行文件是用来监听焦点窗口的名称的，该文件将每十秒钟监听以此焦点窗口的名称，并将信息写入 `~/.timespent/{}.csv` 以及 `~/.timespent/log.txt`。其中，`{}` 中的内容为某一天的时间戳。这个应用程序是用pyinstaller生成的，源代码为 `src/getWindows.py`。
+- [x] para `-h`          : print the infomation of help
 
-而第二个程序是用来显示统计信息的，在命令行输入` ./display` 即可显示统计信息。该可执行文件将读取前述的 `~/.timespent/` 的文件，并提取信息显示。源代码为 `src/display.py`
+- [x] para `-d` `--day`  : print the data of specified day
 
-## 特性
-[==] : 待实现
-[ok] : 已实现
+- [x] para `-i` `--in`   : print the data in the past several days
 
-[ok] 使用条形图来显示s使用时间
+- [x] para `-f` `--from` : print the data since specified number of days
 
-[ok] 参数 `-h` 显示帮助信息
+- [x] para `-g`          : print all the programs instead of top 5 programs
 
-[ok] 参数 `-i`, `--in` 表示指定天数以来的应用使用情况
+- [x] para `-p` `--program`: Only print the specified program's data
 
-[ok] 参数 `-d`, `--day` 表示指定日期的应用使用情况
+- [ ] Set time goal and time control
 
-[ok] 参数 `-f`, `--from` 表示指定日期以来的应用使用情况
+- [ ] print the data in different hours(or mins)
 
-[ok] 参数 `-g` 表示今日所有应用的使用情况而不是只显示前五个
+- [ ] error handling mechanism
 
-[ok] 参数 `-p`, `--program` 表示某一应用的使用情况
+- [ ] package the program as gnome extension
 
-[==] 可设置应用使用时长控制与使用时间目标
+## Usage
+1. Set the program `dist/getWindows` open automatically at boot
+2. Move the program `dist/display` to your directory `~` (this is to say, Input `mv dist/display ~` in terminal)
+3. Reboot
+4. Type `./display` in terminal to start
 
-[==] 使用时间段分析（这意味着可能与旧版本冲突）
+## Remarks
+`getWindows` is a program that get the windows name that is focused every 10s, and save the data in `~/.timespent/{time}.csv`. It exists thanks to pyinstaller. `display` can read the data, and print the data in terminal using an easy way. The source code in the folder `src`.
 
-[==] 完善的错误处理机制
-
-[==] 将整个程序打包成gnome插件
-
-
-## 协议
-GPL3.0
+## LICENSE
+GPL 3.0 or later.
