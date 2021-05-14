@@ -11,7 +11,7 @@ def getweektime(day=7):
     ans = []
     today = datetime.date.today()
     for i in range(day):
-        ans.append(int(time.mktime((today - datetime.timedelta(days=i)).timetuple())))
+        ans.append(int(time.mktime((today - datetime.timedelta(days=day-i-1)).timetuple())))
     return ans
 
 # 返回条形图
@@ -21,7 +21,10 @@ def getweektime(day=7):
 # TODO: 报错处理：maxsize不够
 def showchart(i, j, maxsize):
     maxsize = maxsize - 6
-    numofequals = int(j * maxsize / i)
+    if (i != 0):
+        numofequals = int(j * maxsize / i)
+    else:
+        numofequals = 0
     return (" ( {}{} ) ".format('='*numofequals, ' '*(maxsize - numofequals)))
 
 # 将字体颜色调成蓝色
@@ -128,6 +131,31 @@ def getaday(dirt, date, m):
     t = readfile(filename)
     display(date, t, m)
 
+def getProgramData(dirt, name, i):
+    t = []
+    datelist = getweektime(day=i)
+    for filename in datelist:
+        tmp = readfile("{}/.timespent/{}.csv".format(dirt, filename))
+        flag = False
+        for j in tmp:
+            if j[0] == name:
+                t.append(int(j[1]))
+                flag = True
+        if flag == False:
+            t.append(0)
+    
+    tmp = "The time you spent on {} in {} days is: ".format(name, i)
+    totaltime = sum([j for j in t]) * 10
+    print("{}{}%{}".format(tmp, str(int(totaltime * 100 / 3600 / 24)).rjust(os.get_terminal_size().columns - len(tmp) - 11), str(datetime.timedelta(seconds=totaltime)).rjust(10)))
+
+    maxsize = max(j for j in t)
+    for j in t:
+        i -= 1
+        print("Today - {}: {}{}%{}".format(str(i).rjust(3), showchart(maxsize, j, os.get_terminal_size().columns - 13 - 5 - 10), str(int(j * 1000/ 3600 / 24)).rjust(4), str(datetime.timedelta(seconds=j * 10)).rjust(10)))
+
+
+            
+
 # 获取主目录
 dirt = os.environ['HOME']
 
@@ -179,6 +207,16 @@ A time usage statistics tool on Linux platform, which can display:
         except:
             print("-i Must be an integer.")
             exit(6)
+    elif opt in ["-f", "--from"]:
+        try:
+            tmp = datetime.datetime.strptime(arg, "%Y-%m-%d")
+            i = (datetime.datetime.today() - tmp).days
+        except:
+            print("The format of date should be yyyy-mm-dd")
+            exit(7)
+    elif opt in ["-p", "--program"]:
+        getProgramData(dirt, arg, i)
+        print()
     else:
         print("Parameter Error!")
         exit(5)

@@ -17,7 +17,9 @@ A time usage statistics tool on Linux platform, which can display:
 ## Remarks
 `getWindows` is a program that get the windows name that is focused every 10s, and save the data in `~/.timespent/{time}.csv`. It exists thanks to pyinstaller. `display` can read the data, and print the data in terminal using an easy way. The source code in the folder `src`.
 
-## TODO
+## Feature
+[==] : TODO
+[ok] : Finished
 
 [ok] print the data in an easy way.
 
@@ -27,11 +29,13 @@ A time usage statistics tool on Linux platform, which can display:
 
 [ok] para `-i` `--in`   : print the data in the past several days
 
-[==] para `-f` `--from` : print the data since specified number of days
+[ok] para `-f` `--from` : print the data since specified number of days
 
 [ok] para `-g`          : print all the programs instead of top 5 programs
 
-[==] para `-p` `--program`: Only print the specified program's data
+[ok] para `-p` `--program`: Only print the specified program's data
+
+[==] Set time goal and time control
 
 [==] print the data in different hours(or mins)
 
