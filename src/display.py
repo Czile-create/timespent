@@ -77,8 +77,9 @@ def display(s, t, m=5):
     # 按应用使用时间从大到小排序
     t.sort(key=lambda x: int(x[1]), reverse=True)
 
+    printtime = str(datetime.timedelta(seconds=totaltime * 10))
     # 输出总览图
-    print("{}{}{}{}".format(s.ljust(10), showgeneral(t, totaltime, os.get_terminal_size().columns - 10 - 16), "{}%".format(int(totaltime * 1000 / 3600 / 24)).ljust(7), str(datetime.timedelta(seconds=totaltime * 10)).rjust(9)))
+    print("{}{}{}{}".format(s.ljust(10), showgeneral(t, totaltime, os.get_terminal_size().columns - 10 - 8 - len(printtime)), printtime, "{}%".format(int(totaltime * 1000 / 3600 / 24)).rjust(7)))
 
     if t == []:
         return
@@ -94,8 +95,10 @@ def display(s, t, m=5):
     # 输出前五个应用具体使用时间
     print("Here are the Apps you spent most of the time:")
     maxsize = max(len(i[0]) for i in t[:min(len(t), m)])
+    maxsizeOfPrinttime = max(len(str(datetime.timedelta(seconds=int(i[1]) * 10))) for i in t[:min(len(t), m)])
     for i in t[:min(len(t), m)]:
-        print("{}{}{}{}".format(i[0].ljust(maxsize), showchart(int(t[0][1]), int(i[1]), os.get_terminal_size().columns - 16 - maxsize), "{}%".format(int(int(i[1]) * 1000 / 3600 / 24)).ljust(7), str(datetime.timedelta(seconds=int(i[1]) * 10)).rjust(9)))
+        printtime =  str(datetime.timedelta(seconds=int(i[1]) * 10))
+        print("{}{}{}{}".format(i[0].ljust(maxsize), showchart(int(t[0][1]), int(i[1]), os.get_terminal_size().columns - 8 - maxsize - maxsizeOfPrinttime), printtime.rjust(maxsizeOfPrinttime), "{}%".format(int(int(i[1]) * 1000 / 3600 / 24)).rjust(7)))
 
 # 输出一段时间以来的图表
 # dirt： 主目录
