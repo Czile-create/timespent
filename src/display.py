@@ -4,14 +4,18 @@ import getopt
 
 # 获取当天的时间戳
 def getname():
-    return int(time.mktime(datetime.date.today().timetuple()))
+    return int(time.mktime(
+        datetime.date.today().timetuple()
+    ))
 
 # 获取一周的时间戳
 def getweektime(day=7):
     ans = []
     today = datetime.date.today()
     for i in range(day):
-        ans.append(int(time.mktime((today - datetime.timedelta(days=day-i-1)).timetuple())))
+        ans.append(int(time.mktime((
+            today - datetime.timedelta(days=day-i-1)
+        ).timetuple())))
     return ans
 
 # 返回条形图
@@ -25,7 +29,10 @@ def showchart(i, j, maxsize):
         numofequals = int(j * maxsize / i)
     else:
         numofequals = 0
-    return (" ( {}{} ) ".format('='*numofequals, ' '*(maxsize - numofequals)))
+    return (" ( {}{} ) ".format(
+        '='*numofequals,
+        ' '*(maxsize - numofequals)
+    ))
 
 # 将字体颜色调成蓝色
 def blue(s):
@@ -51,7 +58,12 @@ def showgeneral(t, totaltime, maxsize):
         block.append(int(int(i[1]) * maxsize/ totaltime))
     while (len(block) < 3):
         block.append(0)
-    return " ( {}{}{}{} ) ".format(block[0] * green('='), block[1] * blue('='), block[2] * blue_green('='), (maxsize - sum(block)) * white('='))
+    return " ( {}{}{}{} ) ".format(
+        block[0] * green('='), 
+        block[1] * blue('='), 
+        block[2] * blue_green('='), 
+        (maxsize - sum(block)) * white('=')
+    )
     
 # 读入文件数据
 # 文件格式：[[programs name, using times]]
@@ -79,7 +91,16 @@ def display(s, t, m=5):
 
     printtime = str(datetime.timedelta(seconds=totaltime * 10))
     # 输出总览图
-    print("{}{}{}{}".format(s.ljust(10), showgeneral(t, totaltime, os.get_terminal_size().columns - 10 - 8 - len(printtime)), printtime, "{}%".format(int(totaltime * 1000 / 3600 / 24)).rjust(7)))
+    print("{}{}{}{}".format(
+        s.ljust(10), 
+        showgeneral(
+            t, 
+            totaltime, 
+            os.get_terminal_size().columns - 10 - 8 - len(printtime)
+        ), 
+        printtime, 
+        "{}%".format(int(totaltime * 1000 / 3600 / 24)).rjust(7)
+    ))
 
     if t == []:
         return
@@ -90,15 +111,33 @@ def display(s, t, m=5):
         max3.append("={}    ".format(i[0]))
     while (len(max3) < 3):
         max3.append("")
-    print("{}{}{}{}".format(green(max3[0]), blue(max3[1]), blue_green(max3[2]), white("=other")))
+    print("{}{}{}{}".format(
+        green(max3[0]), 
+        blue(max3[1]), 
+        blue_green(max3[2]), 
+        white("=other")
+    ))
 
     # 输出前五个应用具体使用时间
     print("Here are the Apps you spent most of the time:")
     maxsize = max(len(i[0]) for i in t[:min(len(t), m)])
-    maxsizeOfPrinttime = max(len(str(datetime.timedelta(seconds=int(i[1]) * 10))) for i in t[:min(len(t), m)])
+    maxsizeOfPrinttime = max(
+        len(str(
+            datetime.timedelta(seconds=int(i[1]) * 10)
+        )) for i in t[:min(len(t), m)]
+    )
     for i in t[:min(len(t), m)]:
         printtime =  str(datetime.timedelta(seconds=int(i[1]) * 10))
-        print("{}{}{}{}".format(i[0].ljust(maxsize), showchart(int(t[0][1]), int(i[1]), os.get_terminal_size().columns - 8 - maxsize - maxsizeOfPrinttime), printtime.rjust(maxsizeOfPrinttime), "{}%".format(int(int(i[1]) * 1000 / 3600 / 24)).rjust(7)))
+        print("{}{}{}{}".format(
+            i[0].ljust(maxsize), 
+            showchart(
+                int(t[0][1]), 
+                int(i[1]), 
+                os.get_terminal_size().columns - 8 - maxsize - maxsizeOfPrinttime
+            ), 
+            printtime.rjust(maxsizeOfPrinttime), 
+            "{}%".format(int(int(i[1]) * 1000 / 3600 / 24)).rjust(7)
+        ))
 
 # 输出一段时间以来的图表
 # dirt： 主目录
@@ -127,7 +166,10 @@ def inday(dirt, _i, _m):
 # m: 最大应用显示数
 def getaday(dirt, date, m):
     try:
-        filename = "{}/.timespent/{}.csv".format(dirt, int(time.mktime(time.strptime(date, "%Y-%m-%d"))))
+        filename = "{}/.timespent/{}.csv".format(
+            dirt, 
+            int(time.mktime(time.strptime(date, "%Y-%m-%d")))
+        )
     except:
         print("The format of date should be yyyy-mm-dd!")
         exit(3)
@@ -149,12 +191,25 @@ def getProgramData(dirt, name, i):
     
     tmp = "The time you spent on {} in {} days is: ".format(name, i)
     totaltime = sum([j for j in t]) * 10
-    print("{}{}%{}".format(tmp, str(int(totaltime * 100 / 3600 / 24)).rjust(os.get_terminal_size().columns - len(tmp) - 11), str(datetime.timedelta(seconds=totaltime)).rjust(10)))
+    _totaltime = str(datetime.timedelta(seconds=totaltime))
+    print("{}{}{}%".format(
+        tmp, 
+        _totaltime.rjust(
+            os.get_terminal_size().columns - len(tmp) - 8
+        ), 
+        str(int(totaltime * 100 / 3600 / 24)).rjust(7)
+    ))
 
     maxsize = max(j for j in t)
     for j in t:
         i -= 1
-        print("Today - {}: {}{}%{}".format(str(i).rjust(3), showchart(maxsize, j, os.get_terminal_size().columns - 13 - 5 - 10), str(int(j * 1000/ 3600 / 24)).rjust(4), str(datetime.timedelta(seconds=j * 10)).rjust(10)))
+        _totaltime = str(datetime.timedelta(seconds=j * 10))
+        print("Today - {}: {}{}{}%".format(
+            str(i).rjust(3), 
+            showchart(maxsize, j, os.get_terminal_size().columns - len(_totaltime) - 8), 
+            _totaltime, 
+            str(int(j * 1000/ 3600 / 24)).rjust(7), 
+        ))
 
 
             
@@ -166,10 +221,15 @@ dirt = os.environ['HOME']
 date = time.strftime("%Y-%m-%d", time.localtime(getname()))
 m = 5
 i = 7
+p = ""
 
 # 读取参数
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "d:f:gp:hi:", ["day=", "from=", "program=", "in="])
+    opts, args = getopt.getopt(
+        sys.argv[1:], 
+        "d:f:gp:hi:", 
+        ["day=", "from=", "program=", "in="]
+    )
 except:
     print("Error parameter!")
     exit(1)
@@ -212,19 +272,38 @@ A time usage statistics tool on Linux platform, which can display:
             exit(6)
     elif opt in ["-f", "--from"]:
         try:
+            if "--in" in opt or "-i" in opt:
+                print("Parameter Error, '-i' '-f' cannot use in the same time")
             tmp = datetime.datetime.strptime(arg, "%Y-%m-%d")
             i = (datetime.datetime.today() - tmp).days
         except:
             print("The format of date should be yyyy-mm-dd")
             exit(7)
     elif opt in ["-p", "--program"]:
-        getProgramData(dirt, arg, i)
-        print()
+        p = arg
     else:
         print("Parameter Error!")
         exit(5)
 
+opts = [i[0] for i in opts]
+
+flag = 0
 # 输出数据
-getaday(dirt, date, m)
-print()
-inday(dirt, i, m)
+if "-p" in opts or "--program" in opts:
+    getProgramData(dirt, p, i)
+    print()
+    flag = 1
+if "-d" in opts or "--day" in opts:
+    getaday(dirt, date, m)
+    print()
+    flag = 1
+if "-i" in opts or "--in" in opts or "--from" in opts or "-f" in opts:
+    inday(dirt, i, m)
+    print()
+    flag = 1
+
+
+if (flag == 0):
+    getaday(dirt, date, m)
+    print()
+    inday(dirt, i, m)
